@@ -1,26 +1,25 @@
-from flask import Flask, jsonify
-import jwt
+from flask import Flask, jsonify, request, make_response, abort
 
+from database import db
+from users import USERS, usersEncoder
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
+app.json_encoder = usersEncoder
 
 
-login_v = input("Login:")
-password_v = input("Password:")
+@app.errorhandler(404)
+def not_found():
+    return make_response(jsonify({'Status': 404, 'Error': 'Resource not found'}), 404)
 
 
-def users():
-
-   login = 'joana@gmail.com'
-   password = '123456'
-
-
-@app.route('/', methods=['GET'])
+@app.route('/home', methods=['GET'])
 def home():
-    encoded_jwt = jwt.encode({"só":"teste"}),
-    if login_v == login and password_v == password:
-        print
+    return "<h1>API com Flask</h1>"
 
+
+@app.route('/usuarios', methods=['GET'])
+def lists():
+    return jsonify({'USERS': db})
 
 app.run()
